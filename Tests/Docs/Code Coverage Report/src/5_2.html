@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\hashi\source\repos\GoogleMaps\Tests\Utils.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using FuzzySharp;
+using GoogleMaps.Tests.Data;
+using Newtonsoft.Json;
+using OpenQA.Selenium;
+using System.Text.RegularExpressions;
+
+namespace GoogleMaps.Tests;
+
+public static partial class Utils {
+
+    #region Parsing and Conversions
+
+    /// &lt;summary&gt;
+    /// Converts a distance string to its equivalent value in meters.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;distance&quot;&gt;The distance string (e.g., &quot;23 km&quot; or &quot;1000 m&quot;).&lt;/param&gt;
+    /// &lt;returns&gt;Converted distance value in meters&lt;/returns&gt;
+    /// &lt;exception cref=&quot;ArgumentException&quot;&gt;Thrown for invalid distance string formats&lt;/exception&gt;
+    public static int ConvertDistanceToMeters(string distance) {
+        string[] splitDistance = distance.Split(&quot; &quot;);
+        if (splitDistance[1] == &quot;km&quot;) {
+            return int.Parse(splitDistance[0]) * 1000;
+        } else if (splitDistance[1] == &quot;m&quot;) {
+            return int.Parse(splitDistance[0]);
+        } else {
+            throw new ArgumentException(&quot;Invalid distance string format.&quot;);
+        }
+    }
+
+    /// &lt;summary&gt;
+    /// Extracts latitude, longitude, and zoom level from a Google Maps URL.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;url&quot;&gt;Google Maps URL&lt;/param&gt;
+    /// &lt;returns&gt;An extracted coordinates object&lt;/returns&gt;
+    public static Coordinates GetCoordinatesFromUrl(string url) {
+        string coordStr = new Regex(@&quot;/@(.*?)z&quot;).Match(url).Groups[1].Value;
+        return ParseCoordinates(coordStr);
+    }
+
+    /// &lt;summary&gt;
+    /// Parses comma-separated latitude, longitude, and zoom level coordinates into a struct.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;coordinates&quot;&gt;A comma-separated coordinates string&lt;/param&gt;
+    /// &lt;returns&gt;A Coordinates object&lt;/returns&gt;
+    public static Coordinates ParseCoordinates(string coordinates) {
+        string[] coordArr = coordinates.Split(&#39;,&#39;);
+        return new Coordinates(float.Parse(coordArr[0]), float.Parse(coordArr[1]), float.Parse(coordArr[2]));
+    }
+
+    #endregion
+
+    #region String Comparisons
+
+    /// &lt;summary&gt;
+    /// Calculates the similarity between two strings using fuzzy string comparison.
+    /// &lt;/summary&gt;
+    /// &lt;returns&gt;String similarity percentage (0-100)&lt;/returns&gt;
+    public static int GetStringSimilarity(string str1, string str2) {
+        // Lowercase the entire string and remove some special characters.
+        string regex = @&quot;[.,\r\n-]+&quot;;
+        str1 = Regex.Replace(str1.ToLower(), regex, &quot; &quot;);
+        str2 = Regex.Replace(str2.ToLower(), regex, &quot; &quot;);
+
+        // Return fuzzy string comparison.
+        return Fuzz.PartialTokenSetRatio(str1, str2);
+    }
+
+    /// &lt;summary&gt;
+    /// Determines whether two strings are equal after normalizing line endings for different operating systems.
+    /// &lt;/summary&gt;
+    /// &lt;returns&gt;
+    /// &lt;c&gt;true&lt;/c&gt; if the strings are equal after normalizing line endings; otherwise, &lt;c&gt;false&lt;/c&gt;.
+    /// &lt;/returns&gt;
+    public static bool AreNormalizedStringsEqual(string str1, string str2) {
+        // Replace &#39;\r\n&#39; with &#39;\n&#39; and &#39;\r&#39; with &#39;\n&#39;.
+        string regex = @&quot;\r\n?|\n|\r&quot;;
+        string normalizedStr1 = Regex.Replace(str1, regex, &quot;\n&quot;);
+        string normalizedStr2 = Regex.Replace(str2, regex, &quot;\n&quot;);
+
+        return normalizedStr1.Equals(normalizedStr2);
+    }
+
+    #endregion
+
+    #region File Manipulations
+
+    /// &lt;summary&gt;
+    /// Saves a screenshot in Tests/UI/Screenshots folder.
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;screenshot&quot;&gt;The screenshot object&lt;/param&gt;
+    /// &lt;param name=&quot;fileName&quot;&gt;The filename for the screenshot to save (including extension)&lt;/param&gt;
+    public static void SaveScreenshot(Screenshot screenshot, string fileName) {
+        string screenshotPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, &quot;..&quot;, &quot;..&quot;, &quot;..&quot;, &quot;Tests&quot;, &quot;UI&quot;, &quot;Screenshots&quot;);
+        Directory.CreateDirectory(screenshotPath);
+        string filePath = Path.Combine(screenshotPath, fileName);
+        screenshot.SaveAsFile(filePath);
+    }
+
+    /// &lt;summary&gt;
+    /// Reads and deserializes data from a JSON file.
+    /// &lt;/summary&gt;
+    /// &lt;typeparam name=&quot;TData&quot;&gt;The type to deserialize into&lt;/typeparam&gt;
+    /// &lt;param name=&quot;filePath&quot;&gt;Directory path of the JSON file&lt;/param&gt;
+    /// &lt;param name=&quot;fileName&quot;&gt;Name of the JSON file (including extension)&lt;/param&gt;
+    /// &lt;returns&gt;The deserialized data of type &lt;typeparamref name=&quot;TData&quot;/&gt;&lt;/returns&gt;
+    public static TData ReadDataFromJson&lt;TData&gt;(string filePath, string fileName) {
+        string fullPath = Path.Combine(filePath, fileName);
+        string jsonData = File.ReadAllText(fullPath);
+        TData? data = JsonConvert.DeserializeObject&lt;TData&gt;(jsonData);
+        if (data == null) {
+            Assert.Fail($&quot;Unable to parse data from {fileName}.&quot;);
+        }
+        return data!;
+    }
+
+    #endregion
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[19,64,19,65,1],[20,9,20,54,1],[21,9,21,38,1],[21,39,21,40,1],[22,13,22,55,1],[23,16,23,44,1],[23,45,23,46,1],[24,13,24,48,1],[25,16,25,17,0],[26,13,26,76,0],[28,5,28,6,1],[35,65,35,66,1],[36,9,36,77,1],[37,9,37,43,1],[38,5,38,6,1],[45,68,45,69,1],[46,9,46,52,1],[47,9,47,110,1],[48,5,48,6,1],[58,69,58,70,1],[60,9,60,38,1],[61,9,61,58,1],[62,9,62,58,1],[65,9,65,54,1],[66,5,66,6,1],[74,76,74,77,1],[76,9,76,39,1],[77,9,77,66,1],[78,9,78,66,1],[80,9,80,54,1],[81,5,81,6,1],[92,79,92,80,0],[93,9,93,133,0],[94,9,94,51,0],[95,9,95,66,0],[96,9,96,41,0],[97,5,97,6,0],[106,83,106,84,1],[107,9,107,60,1],[108,9,108,54,1],[109,9,109,70,1],[110,9,110,26,1],[110,27,110,28,0],[111,13,111,67,0],[112,9,112,10,0],[113,9,113,22,1],[114,5,114,6,1]]);
+    </script>
+  </body>
+</html>

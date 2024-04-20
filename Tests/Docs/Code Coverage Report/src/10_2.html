@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\hashi\source\repos\GoogleMaps\Tests\Data\DataReader.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+namespace GoogleMaps.Tests.Data;
+
+public static class DataReader {
+
+    private static readonly string DataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, &quot;..&quot;, &quot;..&quot;, &quot;..&quot;, &quot;Tests&quot;, &quot;Data&quot;, &quot;JSON&quot;);
+
+    public static IEnumerable&lt;Search&gt; GetAddressSearches() {
+        return Utils.ReadDataFromJson&lt;IEnumerable&lt;Search&gt;&gt;(DataPath, &quot;AddressSearches.json&quot;);
+    }
+
+    public static IEnumerable&lt;Search&gt; GetLandmarkSearches() {
+        return Utils.ReadDataFromJson&lt;IEnumerable&lt;Search&gt;&gt;(DataPath, &quot;LandmarkSearches.json&quot;);
+    }
+
+    public static IEnumerable&lt;string&gt; GetInvalidSearches() {
+        return Utils.ReadDataFromJson&lt;IEnumerable&lt;string&gt;&gt;(DataPath, &quot;InvalidSearches.json&quot;);
+    }
+
+    public static IEnumerable&lt;string&gt; GetPartiallyValidSearches() {
+        return Utils.ReadDataFromJson&lt;IEnumerable&lt;string&gt;&gt;(DataPath, &quot;PartiallyValidSearches.json&quot;);
+    }
+
+    public static IEnumerable&lt;Search&gt; GetSearchesWithTypos() {
+        return Utils.ReadDataFromJson&lt;IEnumerable&lt;Search&gt;&gt;(DataPath, &quot;SearchesWithTypos.json&quot;);
+    }
+
+    public static IEnumerable&lt;string&gt; GetAmbiguousSearches() {
+        return Utils.ReadDataFromJson&lt;IEnumerable&lt;string&gt;&gt;(DataPath, &quot;AmbiguousSearches.json&quot;);
+    }
+
+    public static IEnumerable&lt;SearchWithTranslation&gt; GetAddressSearchesWithTranslation() {
+        return Utils.ReadDataFromJson&lt;IEnumerable&lt;SearchWithTranslation&gt;&gt;(DataPath, &quot;AddressSearchesWithTranslation.json&quot;);
+    }
+
+    public static IEnumerable&lt;SearchWithTranslation&gt; GetLandmarkSearchesWithTranslation() {
+        return Utils.ReadDataFromJson&lt;IEnumerable&lt;SearchWithTranslation&gt;&gt;(DataPath, &quot;LandmarkSearchesWithTranslation.json&quot;);
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[5,5,5,142,1],[7,60,7,61,1],[8,9,8,94,1],[9,5,9,6,1],[11,61,11,62,1],[12,9,12,95,1],[13,5,13,6,1],[15,60,15,61,1],[16,9,16,94,1],[17,5,17,6,1],[19,67,19,68,1],[20,9,20,101,1],[21,5,21,6,1],[23,62,23,63,1],[24,9,24,96,1],[25,5,25,6,1],[27,62,27,63,1],[28,9,28,96,1],[29,5,29,6,1],[31,90,31,91,1],[32,9,32,124,1],[33,5,33,6,1],[35,91,35,92,1],[36,9,36,125,1],[37,5,37,6,1]]);
+    </script>
+  </body>
+</html>
