@@ -1,0 +1,39 @@
+name: Google Maps UI Testing
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    # Install .NET
+    - name: Install .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    # Install all project dependencies
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # Build the project
+    - name: Build
+      run: dotnet build --configuration Release
+
+    # Execute all UI tests in the solution
+    - name: Execute UI tests
+      run: dotnet test
