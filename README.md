@@ -18,19 +18,19 @@ This project aims to automate the testing of Google Maps search functionality to
 
 1. Ensure that you have .NET 8.0 installed in your system.
 
-1. Clone the repository:
+2. Clone the repository:
 
 ```bash
 git clone git@github.com:hashirsarwar/google-maps-ui-testing.git
 ```
 
-2. Navigate to the project directory:
+3. Navigate to the project directory:
 
 ```bash
 cd google-maps-ui-tests
 ```
 
-3. Install dependencies:
+4. Install dependencies:
 
 ```bash
 dotnet restore
@@ -38,7 +38,7 @@ dotnet restore
 
 ## Usage
 
-Run the tests using the test runner in your IDE or using the command line.
+Run the tests using the test runner in your IDE or using the following command.
 
 ```bash
 dotnet test -v n
