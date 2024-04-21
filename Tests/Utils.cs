@@ -23,7 +23,7 @@ public static partial class Utils {
         } else if (splitDistance[1] == "m") {
             return int.Parse(splitDistance[0]);
         } else {
-            throw new ArgumentException("Invalid distance string format.");
+            throw new ArgumentException($"Invalid distance string format {distance}");
         }
     }
 
