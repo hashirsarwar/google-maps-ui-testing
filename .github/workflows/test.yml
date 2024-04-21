@@ -8,10 +8,6 @@ on:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-
     runs-on: windows-latest
 
     steps:
@@ -32,7 +28,7 @@ jobs:
 
     # Build the project
     - name: Build
-      run: dotnet build --configuration Release
+      run: dotnet build
 
     # Execute all UI tests in the solution
     - name: Execute UI tests
