@@ -1,5 +1,3 @@
----
-
 # Google Maps UI Test Automation
 
 This repository contains UI tests for Google Maps search functionality using Selenium WebDriver and NUnit.
@@ -57,5 +55,3 @@ The code coverage report can be found in the [CoverageReport](CoverageReport) di
 ## Continuous Integration
 
 Continuous integration (CI) is set up for this project using GitHub Actions. Every push or pull request to the repository triggers the CI pipeline, which automatically builds the project, and runs the tests.
-
----
