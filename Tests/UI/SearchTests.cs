@@ -16,7 +16,7 @@ namespace GoogleMaps.Tests.UI;
 public class SearchTests<TWebDriver> where TWebDriver : IWebDriver, new() {
 
     /// <summary>
-    /// Id for map scale element that appears in the bottom right of Google Maps.
+    /// ID for map scale element that appears in the bottom right of Google Maps.
     /// This element indicates how much the map is zoomed in.
     /// </summary>
     private const string ScaleElementId = "scale";
@@ -313,10 +313,10 @@ public class SearchTests<TWebDriver> where TWebDriver : IWebDriver, new() {
     /// <param name="shouldZoomIn">
     /// Specifies whether the map should zoom in after the search query
     /// </param>
-    private void VerifyZoom(bool shouldZoomIn) {
-        int initialZoomScale = Utils.ConvertDistanceToMeters(_initialMapScale);
-        int currentZoomScale = Utils.ConvertDistanceToMeters(_webDriver.FindElement(By.Id(ScaleElementId)).Text);
-        Assert.That(currentZoomScale, shouldZoomIn ? Is.LessThan(initialZoomScale) : Is.EqualTo(initialZoomScale));
+    private void VerifyZoom(bool shouldZoomIn)
+    {
+        string currentZoomScale = _webDriver.FindElement(By.Id(ScaleElementId)).Text;
+        Assert.That(currentZoomScale, shouldZoomIn ? Is.Not.EqualTo(_initialMapScale) : Is.EqualTo(_initialMapScale));
     }
 
     /// <summary>

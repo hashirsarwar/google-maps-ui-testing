@@ -11,23 +11,6 @@ public static partial class Utils {
     #region Parsing and Conversions
 
     /// <summary>
-    /// Converts a distance string to its equivalent value in meters.
-    /// </summary>
-    /// <param name="distance">The distance string (e.g., "23 km" or "1000 m").</param>
-    /// <returns>Converted distance value in meters</returns>
-    /// <exception cref="ArgumentException">Thrown for invalid distance string formats</exception>
-    public static int ConvertDistanceToMeters(string distance) {
-        string[] splitDistance = distance.Split(" ");
-        if (splitDistance[1] == "km") {
-            return int.Parse(splitDistance[0]) * 1000;
-        } else if (splitDistance[1] == "m") {
-            return int.Parse(splitDistance[0]);
-        } else {
-            throw new ArgumentException($"Invalid distance string format {distance}");
-        }
-    }
-
-    /// <summary>
     /// Extracts latitude, longitude, and zoom level from a Google Maps URL.
     /// </summary>
     /// <param name="url">Google Maps URL</param>
