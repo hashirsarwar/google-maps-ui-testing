@@ -7,7 +7,7 @@ public interface IWebDriverCreator {
     /// <summary>
     /// Creates a web driver and applies given options to the driver.
     /// </summary>
-    /// <param name="geolocation">Mocked geolocation coordinates</param>
+    /// <param name="mockedGeolocation">Mocked geolocation coordinates</param>
     /// <returns>WebDriver object</returns>
-    WebDriver GetWebDriver(Coordinates geolocation);
+    WebDriver GetWebDriver(Coordinates mockedGeolocation);
 }

@@ -19,8 +19,8 @@ public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriver
     private const string ScaleElementId = "scale";
 
     /// <summary>
-    /// The percentage of similarity between search query and search result required to consider
-    /// the search result accurate.
+    /// The percentage of similarity between a search query and search result that is
+    /// required to consider the search result accurate.
     /// </summary>
     private const int SearchSimilarityThreshold = 90;
 
@@ -30,12 +30,11 @@ public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriver
     private const int ElementTimeoutInSeconds = 10;
 
     /// <summary>
-    /// Predefined geolocation for each web driver instance. This is important to keep the
-    /// search results consistent. The coordinate values are also included in the URL of Google
-    /// Maps in the following format: https://www.google.com/maps/@{latitude},{longitude},{zoom_level}z
-    /// Here it's set to Pakistan. zoom_level=3 represents fully zoomed out position of Google Maps.
+    /// The search results on Google Maps are location-dependent. This mocks the web driver's
+    /// geolocation to a constant value to ensure consistent search results. The coordinates are
+    /// set to Pakistan.
     /// </summary>
-    private readonly Coordinates Geolocation = new(32.064608f, 72.697882f, 3.00f);
+    private readonly Coordinates MockedGeolocation = new(32.064608f, 72.697882f, 3.00f);
 
     /// <summary>
     /// Size of the test browser window. This is important to keep the map coordinate values
@@ -46,25 +45,17 @@ public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriver
     private WebDriver _webDriver;
     private string _initialMapScale;
 
-    /// <summary>
-    /// This method is called before each test case execution. It performs the following tasks:
-    /// <list type="bullet">
-    /// <item>Creates a new WebDriver instance with its initial geolocation.</item>
-    /// <item>Sets the browser window size to the predefined `WindowSize`.</item>
-    /// <item>Navigates to Google Maps fully zoomed out and predefined `Geolocation`.</item>
-    /// <item>Waits for the map scale element to be loaded and visible.</item>
-    /// <item>Saves the initial map scale value for later comparison.</item>
-    /// </list>
-    /// </summary>
     [SetUp]
     public void SetUp() {
-        // Create web driver and set window size.
+        // Get a web driver with a mocked geolocation to ensure consistent search results.
         TWebDriverCreator webDriverCreator = new();
-        _webDriver = webDriverCreator.GetWebDriver(Geolocation);
+        _webDriver = webDriverCreator.GetWebDriver(MockedGeolocation);
+
+        // Set a constant window size to ensure consistent location coordinates.
         _webDriver.Manage().Window.Size = WindowSize;
 
-        // Open Google Maps to default location, fully zoomed out.
-        _webDriver.Navigate().GoToUrl($"https://www.google.com/maps/@{Geolocation.Latitude},{Geolocation.Longitude},{Geolocation.ZoomLevel}z");
+        // Open Google Maps at the initial location, fully zoomed out.
+        _webDriver.Navigate().GoToUrl($"https://www.google.com/maps/@{MockedGeolocation.Latitude},{MockedGeolocation.Longitude},{MockedGeolocation.ZoomLevel}z");
 
         // Wait until the map scale in the bottom-right is loaded.
         WebDriverWait wait = new(_webDriver, TimeSpan.FromSeconds(ElementTimeoutInSeconds));
@@ -74,15 +65,6 @@ public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriver
         _initialMapScale = _webDriver.FindElement(By.Id(ScaleElementId)).Text;
     }
 
-    /// <summary>
-    /// This method is called after each test case execution. It performs the following tasks:
-    /// <list type="bullet">
-    /// <item>Checks the test context for test failure.</item>
-    /// <item>If the test failed, captures a screenshot of the browser window and save it in
-    /// Screenshots folder. The filename includes the failed test method name and timestamp.</item>
-    /// <item>Quits and disposes of the WebDriver instance.</item>
-    /// </list>
-    /// </summary>
     [TearDown]
     public void TearDown() {
         // Save screenshot on test failure.
@@ -104,10 +86,9 @@ public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriver
     #region Test Methods
 
     /// <summary>
-    /// This method performs a search using an address as the query text.
-    /// It verifies that a single, valid search result is displayed for the address.
-    /// Assertions are made to check zoom level, coordinates, action buttons presence,
-    /// and address text similarity.
+    /// This method searches an address and verifies that a valid search result is displayed.
+    /// Assertions are made to check zoom level, coordinates, action buttons presence, and address
+    /// text similarity.
     /// </summary>
     /// <param name="search">Search object representing a query and associated information</param>
     [TestCaseSource(typeof(DataReader), nameof(DataReader.GetAddressSearches))]
@@ -123,9 +104,8 @@ public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriver
     }
 
     /// <summary>
-    /// This method searches using a landmark name.
-    /// It verifies a single valid result for the landmark and checks zoom level, coordinates,
-    /// action buttons, and landmark title similarity.
+    /// This method searches a landmark name and verifies that valid result for the landmark is
+    /// displayed. It checks zoom level, coordinates, action buttons, and landmark title similarity.
     /// </summary>
     /// <param name="search">Search object representing a query and associated information</param>
     [TestCaseSource(typeof(DataReader), nameof(DataReader.GetLandmarkSearches))]
@@ -141,9 +121,8 @@ public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriver
     }
 
     /// <summary>
-    /// This method tests searching with invalid text.
-    /// It verifies that the map doesn't zoom in, coordinates remain unchanged, error messages
-    /// are displayed, and no results are shown.
+    /// This method tests searching with invalid text. It verifies that the map doesn't zoom in,
+    /// coordinates remain unchanged, error messages are displayed, and no results are shown.
     /// </summary>
     /// <param name="searchText">Invalid search query</param>
     [TestCaseSource(typeof(DataReader), nameof(DataReader.GetInvalidSearches))]
@@ -154,7 +133,7 @@ public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriver
         VerifyZoom(shouldZoomIn: false);
 
         // Verify that coordinates aren't updated.
-        VerifyCoordinates(expectedCoordinates: Geolocation);
+        VerifyCoordinates(expectedCoordinates: MockedGeolocation);
 
         // Verify the error messages.
         IWebElement errorMessages = _webDriver.FindElement(By.CssSelector(".miFGmb > div:nth-child(1) > div:nth-child(1)"));
@@ -162,10 +141,9 @@ public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriver
     }
 
     /// <summary>
-    /// This method tests searching with partially valid text that may consist of parts
-    /// of two valid addresses.
-    /// It verifies that partial matches are displayed correctly along with "Partial matches"
-    /// and "Don't see what you're looking for?" messages.
+    /// This method tests searching with partially valid text that may consist of parts of two valid
+    /// addresses. It verifies that multiple matches are displayed that partially match the search
+    /// query. It also verifies the relevant info messages.
     /// </summary>
     /// <param name="searchText">Partially valid search query</param>
     [TestCaseSource(typeof(DataReader), nameof(DataReader.GetPartiallyValidSearches))]
@@ -183,8 +161,8 @@ public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriver
     }
 
     /// <summary>
-    /// This method tests ambiguous search terms that could have multiple interpretations.
-    /// It verifies that multiple search results are displayed.
+    /// This method tests ambiguous search terms that could have multiple interpretations. It verifies
+    /// that multiple search results are displayed.
     /// </summary>
     /// <param name="searchText">Ambiguous search query</param>
     [TestCaseSource(typeof(DataReader), nameof(DataReader.GetAmbiguousSearches))]
@@ -196,11 +174,9 @@ public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriver
     }
 
     /// <summary>
-    /// This method tests searching with typos in the query text.
-    /// It verifies a single valid search result is displayed for the correct location,
-    /// even if the search contained a typo.
-    /// Assertions are made to check for the typo message, corrected address display, and
-    /// similarity between the corrected address and search query.
+    /// This method tests searching with typos in the query text. It verifies that the typing error
+    /// is identified and corrected by the system. Assertions are made to check for the typo info,
+    /// corrected address display, and similarity between the corrected address and search query.
     /// </summary>
     /// <param name="search">Search object representing a query and associated information</param>
     [TestCaseSource(typeof(DataReader), nameof(DataReader.GetSearchesWithTypos))]
@@ -220,9 +196,9 @@ public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriver
     }
 
     /// <summary>
-    /// This method tests searching using an address in a language different from the UI language.
-    /// It verifies a single valid search result is displayed for the address and checks for
-    /// similarity between the translated address text and the search query.
+    /// This method tests searching using an address in a language different from the default language.
+    /// It verifies that the address text is translated correctly to the default language and then a valid
+    /// search result is displayed.
     /// </summary>
     /// <param name="search">
     /// Search object representing a query with translation and associated information.
@@ -240,9 +216,9 @@ public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriver
     }
 
     /// <summary>
-    /// This method tests searching with a landmark name in another language.
-    /// It verifies a single valid result, checks zoom level, coordinates, action
-    /// buttons, and translated landmark title similarity.
+    /// This method tests searching using an landmark in a language different from the default language.
+    /// It verifies that the landmark heading is translated correctly to the default language and text in
+    /// language of the query is also displayed as a sub-heading.
     /// </summary>
     /// <param name="search">
     /// Search object representing a query with translation and associated information.
