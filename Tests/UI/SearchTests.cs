@@ -1,33 +1,22 @@
 ﻿using GoogleMaps.Tests.Data;
+using GoogleMaps.Tests.UI.WebDriverCreators;
 using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Edge;
-using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using System.Collections.ObjectModel;
 using System.Drawing;
 
 namespace GoogleMaps.Tests.UI;
 
-[TestFixture(typeof(FirefoxDriver))]
-[TestFixture(typeof(ChromeDriver))]
-[TestFixture(typeof(EdgeDriver))]
-public class SearchTests<TWebDriver> where TWebDriver : IWebDriver, new() {
+[TestFixture(typeof(ChromeDriverCreator))]
+[TestFixture(typeof(EdgeDriverCreator))]
+public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriverCreator, new() {
 
     /// <summary>
     /// ID for map scale element that appears in the bottom right of Google Maps.
     /// This element indicates how much the map is zoomed in.
     /// </summary>
     private const string ScaleElementId = "scale";
-
-    /// <summary>
-    /// This coordinate value represents the fully zoomed out position of Google Maps in
-    /// x,y,z format where x is latitude, y is longitude, and z is zoom level.
-    /// These coordinate values are included in the URL of Google Maps in the following format:
-    /// https://www.google.com/maps/@{latitude},{longitude},{zoom_level}z
-    /// </summary>
-    private const string ZoomedOutCoordinates = "0,0,3";
 
     /// <summary>
     /// The percentage of similarity between search query and search result required to consider
@@ -41,31 +30,41 @@ public class SearchTests<TWebDriver> where TWebDriver : IWebDriver, new() {
     private const int ElementTimeoutInSeconds = 10;
 
     /// <summary>
+    /// Predefined geolocation for each web driver instance. This is important to keep the
+    /// search results consistent. The coordinate values are also included in the URL of Google
+    /// Maps in the following format: https://www.google.com/maps/@{latitude},{longitude},{zoom_level}z
+    /// Here it's set to Pakistan. zoom_level=3 represents fully zoomed out position of Google Maps.
+    /// </summary>
+    private readonly Coordinates Geolocation = new(32.064608f, 72.697882f, 3.00f);
+
+    /// <summary>
     /// Size of the test browser window. This is important to keep the map coordinate values
     /// consistent for different browsers, display resolutions, and test cases.
     /// </summary>
-    private readonly Size WindowSize = new Size(1024, 768);
+    private readonly Size WindowSize = new(1024, 768);
 
-    private IWebDriver _webDriver;
+    private WebDriver _webDriver;
     private string _initialMapScale;
 
     /// <summary>
     /// This method is called before each test case execution. It performs the following tasks:
     /// <list type="bullet">
-    /// <item>Creates a new WebDriver instance based on the specified type (TWebDriver).</item>
+    /// <item>Creates a new WebDriver instance with its initial geolocation.</item>
     /// <item>Sets the browser window size to the predefined `WindowSize`.</item>
-    /// <item>Navigates to Google Maps fully zoomed out using `ZoomedOutCoordinates`.</item>
+    /// <item>Navigates to Google Maps fully zoomed out and predefined `Geolocation`.</item>
     /// <item>Waits for the map scale element to be loaded and visible.</item>
     /// <item>Saves the initial map scale value for later comparison.</item>
     /// </list>
     /// </summary>
     [SetUp]
     public void SetUp() {
-        _webDriver = new TWebDriver();
+        // Create web driver and set window size.
+        TWebDriverCreator webDriverCreator = new();
+        _webDriver = webDriverCreator.GetWebDriver(Geolocation);
         _webDriver.Manage().Window.Size = WindowSize;
 
-        // Open Google Maps fully zoomed out.
-        _webDriver.Navigate().GoToUrl($"https://www.google.com/maps/@{ZoomedOutCoordinates}z");
+        // Open Google Maps to default location, fully zoomed out.
+        _webDriver.Navigate().GoToUrl($"https://www.google.com/maps/@{Geolocation.Latitude},{Geolocation.Longitude},{Geolocation.ZoomLevel}z");
 
         // Wait until the map scale in the bottom-right is loaded.
         WebDriverWait wait = new(_webDriver, TimeSpan.FromSeconds(ElementTimeoutInSeconds));
@@ -155,7 +154,7 @@ public class SearchTests<TWebDriver> where TWebDriver : IWebDriver, new() {
         VerifyZoom(shouldZoomIn: false);
 
         // Verify that coordinates aren't updated.
-        VerifyCoordinates(expectedCoordinates: Utils.ParseCoordinates(ZoomedOutCoordinates));
+        VerifyCoordinates(expectedCoordinates: Geolocation);
 
         // Verify the error messages.
         IWebElement errorMessages = _webDriver.FindElement(By.CssSelector(".miFGmb > div:nth-child(1) > div:nth-child(1)"));
