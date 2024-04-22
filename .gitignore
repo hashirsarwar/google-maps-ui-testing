@@ -395,3 +395,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Screenshots captured and saved on test failure
+Tests/UI/Screenshots
