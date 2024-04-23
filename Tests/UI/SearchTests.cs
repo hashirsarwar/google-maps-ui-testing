@@ -130,6 +130,11 @@ public class SearchTests<TWebDriverCreator> where TWebDriverCreator : IWebDriver
         SearchGoogleMaps(searchText);
         WaitForSearchResultsToLoad();
 
+        // Verify that no result is displayed.
+        ReadOnlyCollection<IWebElement> matches = _webDriver.FindElements(By.CssSelector($"[aria-label=\"Results for {searchText}\"] div.fontBodyMedium.UaQhfb"));
+        Assert.That(matches, Is.Empty);
+
+        // Verify that the map is not zoomed in.
         VerifyZoom(shouldZoomIn: false);
 
         // Verify that coordinates aren't updated.
