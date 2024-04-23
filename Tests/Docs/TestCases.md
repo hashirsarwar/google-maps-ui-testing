@@ -1,4 +1,4 @@
-﻿### Test Case ID: GM1
+﻿## Test Case ID: GM1
 
 **Test Scenario**: Searching for an address displays the correct result.
 
@@ -8,9 +8,9 @@
 3. Wait for the search results to load.
 
 **Preconditions**:
-1. The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
-2. The test browser's window size is set to 1024x768 to ensure consistent coordinates across different display resolutions.
-3. Google Maps should be fully zoomed out before a search query is performed to access the zoom-in behaviour later.
+- The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
+- The test browser's window size is set to 1024x768 to ensure consistent coordinates across different display resolutions.
+- Google Maps should be fully zoomed out before a search query is performed to access the zoom-in behaviour later.
 
 **Expected Results**:
 1. The search should display a single valid result.
@@ -31,7 +31,7 @@
 
 ![Screenshot](TestCases/screenshot_Search_Address_DisplaysCorrectResult.png)
 
-### Test Case ID: GM2
+## Test Case ID: GM2
 
 **Test Scenario**: Searching for a landmark displays the correct result.
 
@@ -41,9 +41,9 @@
 3. Wait for the search results to load.
 
 **Preconditions**:
-1. The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
-2. The test browser's window size is set to 1024x768 to ensure consistent coordinates across different display resolutions.
-3. Google Maps should be fully zoomed out before a search query is performed to access the zoom-in behaviour later.
+- The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
+- The test browser's window size is set to 1024x768 to ensure consistent coordinates across different display resolutions.
+- Google Maps should be fully zoomed out before a search query is performed to access the zoom-in behaviour later.
 
 **Expected Results**:
 1. The search should display a single valid result.
@@ -64,7 +64,7 @@
 
 ![Screenshot](TestCases/screenshot_Search_Landmark_DisplaysCorrectResult.png)
 
-### Test Case ID: GM3
+## Test Case ID: GM3
 
 **Test Scenario**: Searching with an invalid address or landmark displays no result.
 
@@ -74,9 +74,9 @@
 3. Wait for the search results to load.
 
 **Preconditions**:
-1. The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
-2. The test browser's window size is set to 1024x768 to ensure consistent coordinates across different display resolutions.
-3. Google Maps should be fully zoomed out before a search query is performed to access the zoom-in behaviour later.
+- The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
+- The test browser's window size is set to 1024x768 to ensure consistent coordinates across different display resolutions.
+- Google Maps should be fully zoomed out before a search query is performed to access the zoom-in behaviour later.
 
 **Expected Results**:
 1. The search should display no result.
@@ -95,7 +95,7 @@
 
 ![Screenshot](TestCases/screenshot_Search_Invalid_DisplaysNoResult.png)
 
-### Test Case ID: GM4
+## Test Case ID: GM4
 
 **Test Scenario**: Searching with a partially valid address displays partial matches and info.
 
@@ -105,9 +105,7 @@
 3. Wait for the search results to load.
 
 **Preconditions**:
-1. The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
-2. The test browser's window size is set to 1024x768 to ensure consistent coordinates across different display resolutions.
-3. Google Maps should be fully zoomed out before a search query is performed to access the zoom-in behaviour later.
+- The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
 
 **Expected Results**:
 1. The search should display multiple matching results.
@@ -127,7 +125,7 @@ Note that a partially valid address is mostly composed of two valid addresses. I
 
 ![Screenshot](TestCases/screenshot_Search_PartiallyValid_DisplaysMatchesAndInfo.png)
 
-### Test Case ID: GM5
+## Test Case ID: GM5
 
 **Test Scenario**: Searching with an ambiguous address displays multiple search results.
 
@@ -137,14 +135,11 @@ Note that a partially valid address is mostly composed of two valid addresses. I
 3. Wait for the search results to load.
 
 **Preconditions**:
-1. The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
-2. The test browser's window size is set to 1024x768 to ensure consistent coordinates across different display resolutions.
-3. Google Maps should be fully zoomed out before a search query is performed to access the zoom-in behaviour later.
+- The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
 
 **Expected Results**:
 1. The search should display multiple matching results.
 2. The search results should loosely match the search query.
-3. The map is zoomed in to the search results and the map scale should be updated accordingly.
 
 **Test Data Example**:
 - Ambiguous address: "Market Square, Germany"
@@ -157,7 +152,7 @@ Note that a partially valid address is mostly composed of two valid addresses. I
 
 ![Screenshot](TestCases/screenshot_Search_Ambiguous_DisplayMatches.png)
 
-### Test Case ID: GM6
+## Test Case ID: GM6
 
 **Test Scenario**: Searching with typos in an address or landmark displays correct results with typo info.
 
@@ -167,9 +162,9 @@ Note that a partially valid address is mostly composed of two valid addresses. I
 3. Wait for the search results to load.
 
 **Preconditions**:
-1. The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
-2. The test browser's window size is set to 1024x768 to ensure consistent coordinates across different display resolutions.
-3. Google Maps should be fully zoomed out before a search query is performed to access the zoom-in behaviour later.
+- The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
+- The test browser's window size is set to 1024x768 to ensure consistent coordinates across different display resolutions.
+- Google Maps should be fully zoomed out before a search query is performed to access the zoom-in behaviour later.
 
 **Expected Results**:
 1. The system should identify the typo and show the info "Showing results for -- instead of --".
@@ -190,7 +185,7 @@ Note that a partially valid address is mostly composed of two valid addresses. I
 
 ![Screenshot](TestCases/screenshot_Search_WithTypo_DisplaysCorrectResult.png)
 
-### Test Case ID: GM7
+## Test Case ID: GM7
 
 **Test Scenario**: Searching using an address in another language displays the correct result.
 
@@ -200,10 +195,10 @@ Note that a partially valid address is mostly composed of two valid addresses. I
 3. Wait for the search results to load.
 
 **Preconditions**:
-1. The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
-2. The test browser's window size is set to 1024x768 to ensure consistent coordinates across different display resolutions.
-3. Google Maps should be fully zoomed out before a search query is performed to access the zoom-in behaviour later.
-4. Google Maps default language is set to English.
+- The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
+- The test browser's window size is set to 1024x768 to ensure consistent coordinates across different display resolutions.
+- Google Maps should be fully zoomed out before a search query is performed to access the zoom-in behaviour later.
+- Google Maps default language is set to English.
 
 **Expected Results**:
 1. The search query should automatically be translated to the default language.
@@ -227,7 +222,7 @@ Note that a partially valid address is mostly composed of two valid addresses. I
 
 ![Screenshot](TestCases/screenshot_Search_AddressInOtherLanguage_DisplaysCorrectResult.png)
 
-### Test Case ID: GM8
+## Test Case ID: GM8
 
 **Test Scenario**: Searching using a landmark in another language displays the correct result.
 
@@ -237,10 +232,10 @@ Note that a partially valid address is mostly composed of two valid addresses. I
 3. Wait for the search results to load.
 
 **Preconditions**:
-1. The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
-2. The test browser's window size is set to 1024x768 to ensure consistent coordinates across different display resolutions.
-3. Google Maps should be fully zoomed out before a search query is performed to access the zoom-in behaviour later.
-4. Google Maps default language is set to English.
+- The test browser's geolocation is mocked to Latitude: 32.0646 Longitude: 72.6978 to ensure consistent search results when the test is executed from different locations.
+- The test browser's window size is set to 1024x768 to ensure consistent coordinates across different display resolutions.
+- Google Maps should be fully zoomed out before a search query is performed to access the zoom-in behaviour later.
+- Google Maps default language is set to English.
 
 **Expected Results**:
 1. The search query should automatically be translated to the default language.
