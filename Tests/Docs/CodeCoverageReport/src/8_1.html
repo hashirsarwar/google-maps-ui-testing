@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\hashi\source\repos\GoogleMaps\Tests\UI\WebDriverCreators\ChromeDriverCreator.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using GoogleMaps.Tests.Data;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+
+namespace GoogleMaps.Tests.UI.WebDriverCreators;
+
+public class ChromeDriverCreator : IWebDriverCreator {
+    public WebDriver GetWebDriver(Coordinates mockedGeolocation) {
+        ChromeDriver chromeDriver = new();
+
+        // Set geolocation for the chrome driver.
+        chromeDriver.GetDevToolsSession();
+        Dictionary&lt;string, object&gt; coordinates = new() {
+            {&quot;latitude&quot;,mockedGeolocation.Latitude },
+            {&quot;longitude&quot;,mockedGeolocation.Longitude },
+            {&quot;accuracy&quot;,1 }
+        };
+        chromeDriver.ExecuteCdpCommand(&quot;Emulation.setGeolocationOverride&quot;, coordinates);
+
+        return chromeDriver;
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[8,66,8,67,1],[9,9,9,43,1],[12,9,12,43,1],[13,9,17,11,1],[18,9,18,89,1],[20,9,20,29,1],[21,5,21,6,1]]);
+    </script>
+  </body>
+</html>

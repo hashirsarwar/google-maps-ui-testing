@@ -21,23 +21,6 @@ public static partial class Utils {
     #region Parsing and Conversions
 
     /// &lt;summary&gt;
-    /// Converts a distance string to its equivalent value in meters.
-    /// &lt;/summary&gt;
-    /// &lt;param name=&quot;distance&quot;&gt;The distance string (e.g., &quot;23 km&quot; or &quot;1000 m&quot;).&lt;/param&gt;
-    /// &lt;returns&gt;Converted distance value in meters&lt;/returns&gt;
-    /// &lt;exception cref=&quot;ArgumentException&quot;&gt;Thrown for invalid distance string formats&lt;/exception&gt;
-    public static int ConvertDistanceToMeters(string distance) {
-        string[] splitDistance = distance.Split(&quot; &quot;);
-        if (splitDistance[1] == &quot;km&quot;) {
-            return int.Parse(splitDistance[0]) * 1000;
-        } else if (splitDistance[1] == &quot;m&quot;) {
-            return int.Parse(splitDistance[0]);
-        } else {
-            throw new ArgumentException(&quot;Invalid distance string format.&quot;);
-        }
-    }
-
-    /// &lt;summary&gt;
     /// Extracts latitude, longitude, and zoom level from a Google Maps URL.
     /// &lt;/summary&gt;
     /// &lt;param name=&quot;url&quot;&gt;Google Maps URL&lt;/param&gt;
@@ -128,7 +111,7 @@ public static partial class Utils {
 
     </pre>
     <script type="text/javascript">
-      highlightRanges([[19,64,19,65,1],[20,9,20,54,1],[21,9,21,38,1],[21,39,21,40,1],[22,13,22,55,1],[23,16,23,44,1],[23,45,23,46,1],[24,13,24,48,1],[25,16,25,17,0],[26,13,26,76,0],[28,5,28,6,1],[35,65,35,66,1],[36,9,36,77,1],[37,9,37,43,1],[38,5,38,6,1],[45,68,45,69,1],[46,9,46,52,1],[47,9,47,110,1],[48,5,48,6,1],[58,69,58,70,1],[60,9,60,38,1],[61,9,61,58,1],[62,9,62,58,1],[65,9,65,54,1],[66,5,66,6,1],[74,76,74,77,1],[76,9,76,39,1],[77,9,77,66,1],[78,9,78,66,1],[80,9,80,54,1],[81,5,81,6,1],[92,79,92,80,0],[93,9,93,133,0],[94,9,94,51,0],[95,9,95,66,0],[96,9,96,41,0],[97,5,97,6,0],[106,83,106,84,1],[107,9,107,60,1],[108,9,108,54,1],[109,9,109,70,1],[110,9,110,26,1],[110,27,110,28,0],[111,13,111,67,0],[112,9,112,10,0],[113,9,113,22,1],[114,5,114,6,1]]);
+      highlightRanges([[18,65,18,66,1],[19,9,19,77,1],[20,9,20,43,1],[21,5,21,6,1],[28,68,28,69,1],[29,9,29,52,1],[30,9,30,110,1],[31,5,31,6,1],[41,69,41,70,1],[43,9,43,38,1],[44,9,44,58,1],[45,9,45,58,1],[48,9,48,54,1],[49,5,49,6,1],[57,76,57,77,1],[59,9,59,39,1],[60,9,60,66,1],[61,9,61,66,1],[63,9,63,54,1],[64,5,64,6,1],[75,79,75,80,0],[76,9,76,133,0],[77,9,77,51,0],[78,9,78,66,0],[79,9,79,41,0],[80,5,80,6,0],[89,83,89,84,1],[90,9,90,60,1],[91,9,91,54,1],[92,9,92,70,1],[93,9,93,26,1],[93,27,93,28,0],[94,13,94,67,0],[95,9,95,10,0],[96,9,96,22,1],[97,5,97,6,1]]);
     </script>
   </body>
 </html>
